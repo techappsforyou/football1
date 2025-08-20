@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soccer Scholarship</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%; min-height: 100vh; margin: 0; padding: 0;
+      font-family: 'Fredoka One', Arial, sans-serif;
+      background: #191c1e;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    body {
+      width: 100vw; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bg-blur {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('https://i.ibb.co/21ncwwJ9/1697467310224.jpg') center center/cover no-repeat;
+      filter: blur(8px) brightness(0.55);
+      transition: filter .22s;
+    }
+    @media (min-width:700px){
+      .bg-blur{background-size: contain; background-position: center;}
+    }
+    .form-card {
+      max-width: 410px;
+      width: 96vw;
+      min-width: 250px;
+      padding: 28px 18px 22px 18px;
+      border-radius: 22px;
+      box-shadow: 0 8px 34px #0008, 0 2px 0 #fff2;
+      background: rgba(42,55,16,0.13);
+      border: 5px solid #c0bc7d;
+      position: relative;
+      z-index: 2;
+      margin: 16px 0;
+      backdrop-filter: blur(0.7px);
+    }
+    .form-title {
+      font-size: 2.2rem;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #fff;
+      text-shadow: 0 2px 0 #23231c, 0 6px 24px #000c;
+      letter-spacing: .03em;
+      line-height: 1.07;
+    }
+    .form-label {
+      font-size: 1.24rem;
+      color: #fff;
+      margin-bottom: 3px;
+      margin-top: 15px;
+      font-weight: bold;
+      text-shadow: 0 2px 0 #222, 0 6px 18px #000c;
+      letter-spacing: 0.01em;
+      display: block;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      font-size: 1.17rem;
+      padding: 11px 12px;
+      border: 2px solid #fff;
+      background: rgba(21,23,14,0.18);
+      border-radius: 6px;
+      margin-bottom: 3px;
+      margin-top: 2px;
+      font-family: 'Fredoka One', Arial, sans-serif;
+      color: #fff;
+      font-style: italic;
+      font-weight: 400;
+      outline: none;
+      box-shadow: 0 2px 0 #0002;
+      transition: border .14s, background .14s;
+      box-sizing: border-box;
+      display: block;
+    }
+    .form-input:focus, .form-select:focus {
+      border: 2.5px solid #40bcff;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+    .form-input::placeholder {
+      color: #c7ccd7;
+      opacity: 1;
+      font-style: italic;
+      font-size: 1.08rem;
+    }
+    /* Красивый выпадающий список */
+    .form-select {
+      font-style: normal;
+      color: #23242a;
+      background: #fff;
+      font-weight: bold;
+      font-size: 1.17rem;
+      cursor: pointer;
+      outline: none;
+      transition: border .16s;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    .form-select:focus {
+      border: 2.5px solid #40bcff;
+      background: #eef3f8;
+      color: #1a2240;
+    }
+    /* Стилизация выпадающего меню (для Chrome/Edge) */
+    .form-select option {
+      background: #fff;
+      color: #23242a;
+      font-weight: bold;
+      font-size: 1.09rem;
+      padding: 11px 0;
+      font-family: 'Fredoka One', Arial, sans-serif;
+    }
+    /* Firefox */
+    @-moz-document url-prefix() {
+      .form-select option {
+        background: #fff !important;
+        color: #23242a !important;
+      }
+    }
+    .form-btn {
+      width: 100%;
+      margin-top: 21px;
+      padding: 16px 0 15px 0;
+      font-size: 2rem;
+      border-radius: 9px;
+      border: none;
+      font-family: 'Fredoka One', Arial, sans-serif;
+      background: linear-gradient(98deg,#1593ea 60%,#0a54ad 100%);
+      color: #fff;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #002c44, 0 2px 20px #1e7df74a;
+      transition: box-shadow .15s, background .13s;
+      text-shadow: 0 2px 0 #23231c, 0 3px 10px #045db4cc;
+      outline: none;
+      border-bottom: 4px solid #195c91;
+    }
+    .form-btn:active {
+      box-shadow: 0 2px 0 #002c44;
+      background: linear-gradient(98deg,#0e71b5 60%,#083968 100%);
+    }
+    /* Лоадер */
+    .loader-bg {
+      position: fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(40,100,180,0.16);
+      z-index:99;
+      display:flex;align-items:center;justify-content:center;
+      backdrop-filter: blur(2.5px);
+      animation: fadein .12s;
+    }
+    .loader-content {
+      background: rgba(26,31,61,0.92);
+      border-radius: 19px;
+      padding: 34px 24px 30px 24px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-width: 220px; max-width: 90vw;
+      box-shadow: 0 2px 28px #0e213ec2;
+      animation: pop .33s cubic-bezier(.72,1.38,.55,1.08);
+    }
+    .loader-spinner {
+      border: 6px solid #c2c7fa;
+      border-top: 6px solid #16a4fc;
+      border-radius: 50%;
+      width: 62px; height: 62px;
+      margin-bottom: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% {transform:rotate(0);} 100% {transform:rotate(360deg);} }
+    .loader-text {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-align: center;
+      text-shadow: 0 1px 7px #1c364c88;
+    }
+    /* Галочка */
+    .big-check-bg {
+      position: fixed;
+      top:0;left:0;right:0;bottom:0;
+      z-index:99;
+      background:rgba(40,100,180,0.13);
+      display:flex;align-items:center;justify-content:center;
+      animation: fadein .14s;
+      pointer-events:none;
+      backdrop-filter: blur(2.5px);
+    }
+    .big-check {
+      width: 180px;height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(130deg,#2bdbfc 72%,#0b72f8 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 7px 54px #1edcf899,0 0 0 13px #4fc1ff38;
+      animation: pop .44s cubic-bezier(.7,1.7,.62,1.08);
+    }
+    @keyframes pop{0%{transform:scale(.6);opacity:.1;} 70%{transform:scale(1.12);} 100%{transform:scale(1);opacity:1;}}
+    @keyframes fadein { from{opacity:0;} to{opacity:1;} }
+    .big-check svg {
+      width: 110px; height: 110px; display:block;
+    }
+    @media (max-width: 500px){
+      .form-card{max-width:99vw;padding:22px 4vw 16px 4vw;}
+      .big-check{width:125px;height:125px;}
+      .big-check svg{width:70px;height:70px;}
+      .loader-content{padding:20px 5vw 18px 5vw;}
+      .loader-spinner{width:44px;height:44px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blur"></div>
+  <form class="form-card" id="schForm" autocomplete="off" onsubmit="return false;">
+    <div class="form-title">SOCCER<br>SCHOLARSHIP</div>
+    <label class="form-label" for="fname">First name</label>
+    <input class="form-input" id="fname" name="fname" placeholder="Ann" autocomplete="off" required maxlength="25">
+    <label class="form-label" for="age">Age</label>
+    <input class="form-input" id="age" name="age" placeholder="18" type="number" min="7" max="50" required style="font-style:normal;">
+    <label class="form-label" for="email">Email</label>
+    <input class="form-input" id="email" name="email" type="email" placeholder="your@email.com" required>
+    <label class="form-label" for="position">Preferred position</label>
+    <select class="form-select" id="position" name="position" required>
+      <option value="" disabled selected>Select position</option>
+      <option value="Forward">Forward</option>
+      <option value="Midfielder">Midfielder</option>
+      <option value="Defender">Defender</option>
+      <option value="Goalkeeper">Goalkeeper</option>
+      <option value="Winger">Winger</option>
+      <option value="Fullback">Fullback</option>
+    </select>
+    <button class="form-btn" type="submit">APPLY</button>
+  </form>
+  <div id="loaderAnim" style="display:none"></div>
+  <div id="checkMark" style="display:none"></div>
+  <script>
+    const form = document.getElementById('schForm');
+    form.onsubmit = function(e){
+      e.preventDefault();
+      // Показать лоадер
+      document.getElementById('loaderAnim').innerHTML = `
+        <div class="loader-bg">
+          <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Looking for a team for you...</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('loaderAnim').style.display = 'block';
+      // Через 2.2 сек — показать галочку
+      setTimeout(()=>{
+        document.getElementById('loaderAnim').style.display = 'none';
+        document.getElementById('checkMark').innerHTML = `
+          <div class="big-check-bg">
+            <div class="big-check">
+              <svg viewBox="0 0 80 80">
+                <polyline points="19,44 36,60 62,22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        `;
+        document.getElementById('checkMark').style.display = 'block';
+        setTimeout(()=>{
+          document.getElementById('checkMark').style.display = 'none';
+          form.reset();
+        }, 2000);
+      }, 2200);
+    }
+  </script>
+</body>
+</html>
